@@ -10,8 +10,4 @@ az_2                     = "us-east-1b"
 ecs_cluster_name         = "dev-cluster"
 ecs_task_family          = "dev-task-family"
 patient_service_image    = "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/patient-service:dev"
-security_group_id        = "sg-xyz-dev"
 alb_name                 = "dev-alb"
-lb_security_groups       = ["sg-xyz-dev"]
-lb_subnets               = ["subnet-xyz1", "subnet-xyz2"]
-
