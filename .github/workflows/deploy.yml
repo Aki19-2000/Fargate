@@ -12,18 +12,20 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Trigger the Docker build and push workflow
+      # Step 2: Trigger Docker Build and Push workflow using repository_dispatch
       - name: Trigger Docker Build and Push
-        uses: peter-evans/workflow-dispatch@v2  # Use the correct version (v2)
-        with:
-          repository: Fargate  # Your repository name
-          workflow: build-push-docker.yml  # Name of the Docker build and push workflow
-          ref: ${{ github.ref }}  # Use the current branch or PR to trigger the workflow
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"trigger-build-push-docker"}'
 
-      # Step 3: Trigger the Terraform Plan and Apply workflow
+      # Step 3: Trigger Terraform Plan and Apply workflow using repository_dispatch
       - name: Trigger Terraform Deploy
-        uses: peter-evans/workflow-dispatch@v2  # Use the correct version (v2)
-        with:
-          repository: Fargate  # Your repository name
-          workflow: terraform.yml  # Name of the Terraform workflow
-          ref: ${{ github.ref }}  # Use the current branch or PR to trigger the workflow
+        run: |
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"trigger-terraform-deploy"}'
