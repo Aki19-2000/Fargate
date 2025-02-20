@@ -10,8 +10,4 @@ az_2                     = "us-east-1b"
 ecs_cluster_name         = "staging-cluster"
 ecs_task_family          = "staging-task-family"
 patient_service_image    = "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/patient-service:staging"
-security_group_id        = "sg-xyz-staging"
 alb_name                 = "staging-alb"
-lb_security_groups       = ["sg-xyz-staging"]
-lb_subnets               = ["subnet-xyz1", "subnet-xyz2"]
-
