@@ -37,4 +37,3 @@ variable "az_2" {
   description = "Availability zone for public subnet 2"
   type        = string
 }
-
