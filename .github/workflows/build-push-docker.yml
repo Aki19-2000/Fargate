@@ -1,40 +1,31 @@
-name: Build and Push Docker Images to ECR
+name: Deploy Application
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Allow manual trigger of the workflow
 
 jobs:
-  build:
+  build-and-deploy:
     runs-on: ubuntu-latest
+
     steps:
       # Step 1: Checkout the code
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Set up Docker Buildx (for multi-platform builds)
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v2
-
-      # Step 3: Log in to Amazon ECR using AWS credentials stored in GitHub Secrets
-      - name: Log in to Amazon ECR
-        uses: aws-actions/amazon-ecr-login@v1
-
-      # Step 4: Build the patient-service Docker image
-      - name: Build patient-service Docker image
+      # Step 2: Trigger Docker Build and Push workflow using repository_dispatch
+      - name: Trigger Docker Build and Push
         run: |
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/patient-service:latest -f app/patient-service/Dockerfile .
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"trigger-build-push-docker"}'
 
-      # Step 5: Build the appointment-service Docker image
-      - name: Build appointment-service Docker image
+      # Step 3: Trigger Terraform Plan and Apply workflow using repository_dispatch
+      - name: Trigger Terraform Deploy
         run: |
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/appointment-service:latest -f app/appointment-service/Dockerfile .
-
-      # Step 6: Push patient-service Docker image to ECR
-      - name: Push patient-service Docker image to ECR
-        run: |
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/patient-service:latest
-
-      # Step 7: Push appointment-service Docker image to ECR
-      - name: Push appointment-service Docker image to ECR
-        run: |
-          docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/appointment-service:latest
+          curl -X POST \
+            -H "Accept: application/vnd.github.v3+json" \
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/repos/${{ github.repository }}/dispatches \
+            -d '{"event_type":"trigger-terraform-deploy"}'
