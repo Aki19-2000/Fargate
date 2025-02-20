@@ -16,7 +16,7 @@ jobs:
       - name: Trigger Docker Build and Push
         uses: peter-evans/workflow-dispatch@v1
         with:
-          repository: your-repo-name  # Set the repository name
+          repository: Fargate  # Set the repository name
           workflow: build-push-docker.yml  # Specify the workflow file name
           ref: ${{ github.ref }}  # Use the current commit or PR branch
 
@@ -24,7 +24,7 @@ jobs:
       - name: Trigger Terraform Deploy
         uses: peter-evans/workflow-dispatch@v1
         with:
-          repository: your-repo-name  # Set the repository name
+          repository: Fargate  # Set the repository name
           workflow: terraform.yml  # Specify the workflow file name
           ref: ${{ github.ref }}  # Use the current commit or PR branch
 
