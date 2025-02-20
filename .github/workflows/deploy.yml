@@ -29,7 +29,7 @@ jobs:
         with:
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: ${{ secrets.AWS_REGION }}
+          aws_region: "us-east-1"
 
       # Initialize Terraform
       - name: Terraform Init
@@ -59,7 +59,7 @@ jobs:
       - name: Log in to Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
         with:
-          region: ${{ secrets.AWS_REGION }}  # Pass AWS region here
+          region: "us-east-1"  # Pass AWS region here
 
       # Build and push patient-service Docker image
       - name: Build and Push patient-service Docker image
