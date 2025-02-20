@@ -19,4 +19,3 @@ output "patient_service_repo_url" {
   description = "The repository URL for the patient service"
   value       = module.ecr.patient_service_repo_url
 }
-
