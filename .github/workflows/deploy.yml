@@ -27,21 +27,24 @@ jobs:
       - name: Configure AWS credentials for Terraform
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}  # Correct input names
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       # Initialize Terraform
       - name: Terraform Init
         run: terraform init
+        working-directory: terraform  # Ensure Terraform runs from the correct directory
 
       # Run Terraform plan
       - name: Terraform Plan
         run: terraform plan -var-file=terraform/env/dev/dev.tfvars
+        working-directory: terraform  # Ensure Terraform runs from the correct directory
 
       # Apply Terraform to create resources (e.g., ECR repositories)
       - name: Terraform Apply
         run: terraform apply -var-file=terraform/env/dev/dev.tfvars -auto-approve
+        working-directory: terraform  # Ensure Terraform runs from the correct directory
 
   # Job 3: Build and Push Docker Images to ECR
   build-docker:
