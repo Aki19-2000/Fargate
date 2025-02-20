@@ -1,1 +1,30 @@
+name: Deploy Application
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Trigger Docker image build and push to ECR
+      - name: Trigger Docker Build and Push
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          repository: your-repo-name  # Set the repository name
+          workflow: build-push-docker.yml  # Specify the workflow file name
+          ref: ${{ github.ref }}  # Use the current commit or PR branch
+
+      # Step 3: Trigger Terraform Plan and Apply
+      - name: Trigger Terraform Deploy
+        uses: peter-evans/workflow-dispatch@v1
+        with:
+          repository: your-repo-name  # Set the repository name
+          workflow: terraform.yml  # Specify the workflow file name
+          ref: ${{ github.ref }}  # Use the current commit or PR branch
 
