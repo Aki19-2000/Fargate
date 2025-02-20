@@ -22,12 +22,12 @@ jobs:
       # Step 4: Build the patient-service Docker image
       - name: Build patient-service Docker image
         run: |
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/patient-service:latest .
+          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/patient-service:latest -f app/patient-service/Dockerfile .
 
       # Step 5: Build the appointment-service Docker image
       - name: Build appointment-service Docker image
         run: |
-          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/appointment-service:latest .
+          docker build -t ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/appointment-service:latest -f app/appointment-service/Dockerfile .
 
       # Step 6: Push patient-service Docker image to ECR
       - name: Push patient-service Docker image to ECR
@@ -38,4 +38,3 @@ jobs:
       - name: Push appointment-service Docker image to ECR
         run: |
           docker push ${{ secrets.AWS_ACCOUNT_ID }}.dkr.ecr.${{ secrets.AWS_REGION }}.amazonaws.com/appointment-service:latest
-
