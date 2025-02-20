@@ -58,25 +58,7 @@ variable "patient_service_image" {
   default     = "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/patient-service:latest"
 }
 
-variable "security_group_id" {
-  description = "The security group ID for ECS service"
-  default     = "sg-12345"
-}
-
 variable "alb_name" {
   description = "The name of the Application Load Balancer"
   default     = "my-alb"
 }
-
-variable "lb_security_groups" {
-  description = "The security groups for the load balancer"
-  type        = list(string)
-  default     = ["sg-12345"]
-}
-
-variable "lb_subnets" {
-  description = "The subnets where the load balancer will be deployed"
-  type        = list(string)
-  default     = []
-}
-
