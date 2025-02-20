@@ -1,7 +1,7 @@
 name: Terraform Plan and Apply
 
 on:
-  workflow_disptach:
+  workflow_dispatch:  # Trigger manually using workflow dispatch
 
 jobs:
   terraform:
@@ -30,9 +30,8 @@ jobs:
 
       # Step 5: Run terraform plan to preview the changes
       - name: Terraform Plan
-        run: terraform plan -var-file=dev.tfvars  # Change dev.tfvars if needed for different environments
+        run: terraform plan -var-file=terraform/env/dev/dev.tfvars  # Correct path to dev.tfvars
 
       # Step 6: Apply the Terraform changes (deploy)
       - name: Terraform Apply
-        run: terraform apply -var-file=dev.tfvars -auto-approve  # Change dev.tfvars if needed for different environments
-
+        run: terraform apply -var-file=terraform/env/dev/dev.tfvars -auto-approve  # Correct path to dev.tfvars
