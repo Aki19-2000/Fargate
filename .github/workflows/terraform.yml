@@ -1,7 +1,8 @@
 name: Terraform Plan and Apply
 
 on:
-  workflow_dispatch:  # Trigger manually using workflow dispatch
+  repository_dispatch:
+    types: [trigger-terraform-deploy]  # Listen for this event
 
 jobs:
   terraform:
@@ -24,14 +25,14 @@ jobs:
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: ${{ secrets.AWS_REGION }}
 
-      # Step 4: Run terraform init to initialize the working directory
+      # Step 4: Initialize Terraform working directory
       - name: Terraform Init
         run: terraform init
 
-      # Step 5: Run terraform plan to preview the changes
+      # Step 5: Run terraform plan to preview changes
       - name: Terraform Plan
-        run: terraform plan -var-file=terraform/env/dev/dev.tfvars  # Correct path to dev.tfvars
+        run: terraform plan -var-file=terraform/env/dev/dev.tfvars
 
-      # Step 6: Apply the Terraform changes (deploy)
+      # Step 6: Apply Terraform changes
       - name: Terraform Apply
-        run: terraform apply -var-file=terraform/env/dev/dev.tfvars -auto-approve  # Correct path to dev.tfvars
+        run: terraform apply -var-file=terraform/env/dev/dev.tfvars -auto-approve
