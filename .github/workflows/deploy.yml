@@ -1,7 +1,7 @@
 name: Deploy Application
 
 on:
-  workflow_dispatch:
+  workflow_dispatch:  # Allow manual trigger of the workflow
 
 jobs:
   build-and-deploy:
@@ -12,19 +12,18 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      # Step 2: Trigger Docker image build and push to ECR
+      # Step 2: Trigger the Docker build and push workflow
       - name: Trigger Docker Build and Push
-        uses: peter-evans/workflow-dispatch@v1
+        uses: peter-evans/workflow-dispatch@v2  # Use the correct version (v2)
         with:
-          repository: Fargate  # Set the repository name
-          workflow: build-push-docker.yml  # Specify the workflow file name
-          ref: ${{ github.ref }}  # Use the current commit or PR branch
+          repository: Fargate  # Your repository name
+          workflow: build-push-docker.yml  # Name of the Docker build and push workflow
+          ref: ${{ github.ref }}  # Use the current branch or PR to trigger the workflow
 
-      # Step 3: Trigger Terraform Plan and Apply
+      # Step 3: Trigger the Terraform Plan and Apply workflow
       - name: Trigger Terraform Deploy
-        uses: peter-evans/workflow-dispatch@v1
+        uses: peter-evans/workflow-dispatch@v2  # Use the correct version (v2)
         with:
-          repository: Fargate  # Set the repository name
-          workflow: terraform.yml  # Specify the workflow file name
-          ref: ${{ github.ref }}  # Use the current commit or PR branch
-
+          repository: Fargate  # Your repository name
+          workflow: terraform.yml  # Name of the Terraform workflow
+          ref: ${{ github.ref }}  # Use the current branch or PR to trigger the workflow
