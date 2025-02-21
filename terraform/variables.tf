@@ -45,12 +45,12 @@ variable "az_2" {
 # ECS Configuration
 variable "ecs_cluster_name" {
   description = "Name of the ECS Cluster"
-  default     = "my-cluster"
+  default     = "dev-cluster"
 }
 
 variable "ecs_task_family" {
   description = "ECS Task Definition Family"
-  default     = "my-task-family"
+  default     = "dev-task-family"
 }
 
 variable "patient_service_image" {
@@ -58,7 +58,40 @@ variable "patient_service_image" {
   default     = "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/patient-service:latest"
 }
 
+variable "appointment_service_image" {
+  description = "Docker image URL for the appointment service"
+  default     = "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/appointment-service:latest"
+}
+
+# ALB Configuration
 variable "alb_name" {
   description = "The name of the Application Load Balancer"
-  default     = "my-alb"
+  default     = "dev-alb"
+}
+
+variable "lb_security_groups" {
+  description = "The security groups to associate with the ALB"
+  type        = list(string)
+}
+
+variable "lb_subnets" {
+  description = "The subnets to associate with the ALB"
+  type        = list(string)
+}
+
+# VPC ID (if needed for the ALB configuration)
+variable "vpc_id" {
+  description = "The VPC ID where the ALB and target groups will be created"
+  type        = string
+}
+
+# Subnet ID and Security Group ID for ECS services (needed for networking)
+variable "subnet_id" {
+  description = "Subnet ID for ECS services"
+  type        = string
+}
+
+variable "security_group_id" {
+  description = "Security Group ID for ECS services"
+  type        = string
 }
