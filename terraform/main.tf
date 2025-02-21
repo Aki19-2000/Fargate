@@ -1,3 +1,15 @@
+module "vpc" {
+  source               = "./modules/vpc"
+  vpc_cidr             = var.vpc_cidr
+  vpc_name             = "my-vpc"
+  public_subnet_1_cidr = var.public_subnet_1_cidr
+  private_subnet_1_cidr = var.private_subnet_1_cidr
+  public_subnet_2_cidr = var.public_subnet_2_cidr
+  private_subnet_2_cidr = var.private_subnet_2_cidr
+  az_1                 = var.az_1
+  az_2                 = var.az_2
+}
+
 # Create the Security Groups first, so they are available for ALB and ECS
 resource "aws_security_group" "ecs_sg" {
   name        = "ecs_security_group"
@@ -39,19 +51,6 @@ resource "aws_security_group" "lb_sg" {
   }
 }
 
-# Now create modules referencing the SGs
-
-module "vpc" {
-  source               = "./modules/vpc"
-  vpc_cidr             = var.vpc_cidr
-  vpc_name             = "my-vpc"
-  public_subnet_1_cidr = var.public_subnet_1_cidr
-  private_subnet_1_cidr = var.private_subnet_1_cidr
-  public_subnet_2_cidr = var.public_subnet_2_cidr
-  private_subnet_2_cidr = var.private_subnet_2_cidr
-  az_1                 = var.az_1
-  az_2                 = var.az_2
-}
 
 module "ecs" {
   source                = "./modules/ecs"
