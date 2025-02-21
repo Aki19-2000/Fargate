@@ -1,5 +1,5 @@
 variable "ecs_cluster_name" {
-  description = "ECS Cluster Name"
+  description = "Name of the ECS Cluster"
   type        = string
 }
 
@@ -9,12 +9,12 @@ variable "ecs_task_family" {
 }
 
 variable "ecs_execution_role_arn" {
-  description = "ARN of the ECS Execution Role"
+  description = "ECS Execution Role ARN"
   type        = string
 }
 
 variable "ecs_task_role_arn" {
-  description = "ARN of the ECS Task Role"
+  description = "ECS Task Role ARN"
   type        = string
 }
 
@@ -29,11 +29,11 @@ variable "appointment_service_image" {
 }
 
 variable "subnet_id" {
-  description = "ID of the subnet"
+  description = "Subnet ID for ECS services"
   type        = string
 }
 
 variable "security_group_id" {
-  description = "ID of the security group"
+  description = "Security Group ID for ECS services"
   type        = string
 }
