@@ -1,4 +1,15 @@
-# Declare the Application Load Balancer
+# modules/alb/main.tf
+
+variable "patient_service_id" {
+  description = "The ECS patient service ID"
+  type        = string
+}
+
+variable "appointment_service_id" {
+  description = "The ECS appointment service ID"
+  type        = string
+}
+
 resource "aws_lb" "app_lb" {
   name               = var.alb_name
   internal           = false
@@ -34,7 +45,6 @@ resource "aws_lb_listener" "http_listener" {
     fixed_response {
       status_code = 200
       message_body = "Welcome to the Application Load Balancer!"
-      content_type = "text/plain"  # Add this to resolve error
     }
   }
 }
@@ -72,14 +82,12 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
 # Register ECS Services with respective Target Groups
 resource "aws_lb_target_group_attachment" "patient_service_attachment" {
   target_group_arn = aws_lb_target_group.patient_tg.arn
-  target_id        = module.ecs.patient_service_id  # Correct reference to output of ECS module
+  target_id        = var.patient_service_id
   port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
-  target_id        = module.ecs.appointment_service_id  # Correct reference to output of ECS module
+  target_id        = var.appointment_service_id
   port             = 80
 }
-
-
