@@ -8,13 +8,13 @@ output "ecs_task_definition_arn" {
 
 # ecs module outputs.tf
 output "patient_service_id" {
-  description = "The ECS patient service ARN"
-  value       = aws_ecs_service.patient_service.arn
+  description = "The ECS patient service ID"
+  value       = aws_ecs_service.patient_service.id  # Use .id instead of .arn
 }
 
 output "appointment_service_id" {
-  description = "The ECS appointment service ARN"
-  value       = aws_ecs_service.appointment_service.arn
+  description = "The ECS appointment service ID"
+  value       = aws_ecs_service.appointment_service.id  # Use .id instead of .arn
 }
 
 
