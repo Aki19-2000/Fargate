@@ -87,7 +87,3 @@ resource "aws_ecs_service" "appointment_service" {
 }
 
 
-
-output "appointment_service_id" {
-  value = aws_ecs_service.appointment_service.id
-}
