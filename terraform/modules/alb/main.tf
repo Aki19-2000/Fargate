@@ -1,5 +1,3 @@
-# modules/alb/main.tf
-
 variable "patient_service_id" {
   description = "The ECS patient service ID"
   type        = string
@@ -61,7 +59,7 @@ resource "aws_lb_listener_rule" "patient_service_rule" {
   condition {
     path_pattern { 
       values = ["/patient"]
-    } 
+    }
   }
 }
 
@@ -80,22 +78,19 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
   }
 }
 
+# Register ECS Services with respective Target Groups
 resource "aws_lb_target_group_attachment" "patient_service_attachment" {
   target_group_arn = aws_lb_target_group.patient_tg.arn
-  target_id        = var.patient_service_id  # ECS service ID for patient service
+  target_id        = var.patient_service_id  # Passed from main.tf (module.ecs.patient_service.id)
   port             = 80
 
-  depends_on = [
-    aws_ecs_service.patient_service  # Ensure patient service is created before attaching
-  ]
+  depends_on = [module.ecs.patient_service]  # Ensure ECS service is created before attaching
 }
 
 resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
-  target_id        = var.appointment_service_id  # ECS service ID for appointment service
+  target_id        = var.appointment_service_id  # Passed from main.tf (module.ecs.appointment_service.id)
   port             = 80
 
-  depends_on = [
-    aws_ecs_service.appointment_service  # Ensure appointment service is created before attaching
-  ]
+  depends_on = [module.ecs.appointment_service]  # Ensure ECS service is created before attaching
 }
