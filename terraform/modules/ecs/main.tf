@@ -56,19 +56,13 @@ resource "aws_ecs_task_definition" "appointment_service" {
   }])
 }
 
-# Patient Service ECS Service with Load Balancer Configuration
+# Patient Service ECS Service
 resource "aws_ecs_service" "patient_service" {
   name            = "patient-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.patient_service.arn
   desired_count   = 1
   launch_type     = "FARGATE"
-
-  load_balancer {
-    target_group_arn = var.patient_tg_arn  # Directly reference the target group ARN from ALB
-    container_name   = "patient-service"
-    container_port   = 3001
-  }
 
   network_configuration {
     subnets          = [var.subnet_id]
@@ -77,19 +71,13 @@ resource "aws_ecs_service" "patient_service" {
   }
 }
 
-# Appointment Service ECS Service with Load Balancer Configuration
+# Appointment Service ECS Service
 resource "aws_ecs_service" "appointment_service" {
   name            = "appointment-service"
   cluster         = aws_ecs_cluster.main.id
   task_definition = aws_ecs_task_definition.appointment_service.arn
   desired_count   = 1
   launch_type     = "FARGATE"
-
-  load_balancer {
-    target_group_arn = var.appointment_tg_arn  # Directly reference the target group ARN from ALB
-    container_name   = "appointment-service"
-    container_port   = 3002
-  }
 
   network_configuration {
     subnets          = [var.subnet_id]
