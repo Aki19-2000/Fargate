@@ -5,4 +5,3 @@ resource "aws_ecr_repository" "patient_service" {
 resource "aws_ecr_repository" "appointment_service" {
   name = var.appointment_service_repo_name
 }
-
