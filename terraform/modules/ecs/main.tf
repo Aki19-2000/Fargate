@@ -1,3 +1,15 @@
+resource "aws_ecs_cluster" "main" {
+  name = var.ecs_cluster_name
+}
+
+output "ecs_cluster_id" {
+  value = aws_ecs_cluster.main.id
+}
+
+output "ecs_cluster_name" {
+  value = aws_ecs_cluster.main.name
+}
+
 # Patient Service ECS Task Definition
 resource "aws_ecs_task_definition" "patient_service" {
   family                   = var.ecs_task_family
@@ -6,7 +18,6 @@ resource "aws_ecs_task_definition" "patient_service" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
-  # Task-level CPU and Memory
   cpu       = "256"
   memory    = "512"
 
@@ -34,7 +45,6 @@ resource "aws_ecs_task_definition" "appointment_service" {
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
 
-  # Task-level CPU and Memory
   cpu       = "256"
   memory    = "512"
 
@@ -82,4 +92,12 @@ resource "aws_ecs_service" "appointment_service" {
     security_groups = [var.security_group_id]
     assign_public_ip = true
   }
+}
+
+output "patient_service_id" {
+  value = aws_ecs_service.patient_service.id
+}
+
+output "appointment_service_id" {
+  value = aws_ecs_service.appointment_service.id
 }
