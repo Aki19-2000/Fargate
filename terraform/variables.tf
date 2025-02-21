@@ -55,12 +55,12 @@ variable "ecs_task_family" {
 
 variable "patient_service_image" {
   description = "Docker image URL for the patient service"
-  default     = "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/patient-service:latest"
+  default     = "510278866235.dkr.ecr.us-east-1.amazonaws.com/patient-service:latest"
 }
 
 variable "appointment_service_image" {
   description = "Docker image URL for the appointment service"
-  default     = "<aws_account_id>.dkr.ecr.<region>.amazonaws.com/appointment-service:latest"
+  default     = "510278866235.dkr.ecr.us-east-1.amazonaws.com/appointment-service:latest"
 }
 
 # ALB Configuration
@@ -69,14 +69,15 @@ variable "alb_name" {
   default     = "dev-alb"
 }
 
-variable "lb_security_groups" {
-  description = "The security groups to associate with the ALB"
-  type        = list(string)
+# Security Groups
+variable "lb_security_group_id" {
+  description = "The Security Group ID for the ALB"
+  type        = string
 }
 
-variable "lb_subnets" {
-  description = "The subnets to associate with the ALB"
-  type        = list(string)
+variable "ecs_security_group_id" {
+  description = "The Security Group ID for ECS services"
+  type        = string
 }
 
 # VPC ID (if needed for the ALB configuration)
@@ -85,12 +86,13 @@ variable "vpc_id" {
   type        = string
 }
 
-# Subnet ID and Security Group ID for ECS services (needed for networking)
+# Subnet ID for ECS services
 variable "subnet_id" {
   description = "Subnet ID for ECS services"
   type        = string
 }
 
+# Security Group ID for ECS services
 variable "security_group_id" {
   description = "Security Group ID for ECS services"
   type        = string
