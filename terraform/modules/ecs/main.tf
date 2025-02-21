@@ -65,7 +65,7 @@ resource "aws_ecs_service" "patient_service" {
   launch_type     = "FARGATE"
 
   load_balancer {
-    target_group_arn = var.patient_tg_arn  # Pass the target group ARN here
+    target_group_arn = var.patient_tg_arn  # Reference from ALB module
     container_name   = "patient-service"
     container_port   = 3001
   }
@@ -86,7 +86,7 @@ resource "aws_ecs_service" "appointment_service" {
   launch_type     = "FARGATE"
 
   load_balancer {
-    target_group_arn = var.appointment_tg_arn  # Pass the target group ARN here
+    target_group_arn = var.appointment_tg_arn  # Reference from ALB module
     container_name   = "appointment-service"
     container_port   = 3002
   }
