@@ -17,15 +17,6 @@ output "appointment_service_id" {
   value       = aws_ecs_service.appointment_service.id  # Use .id instead of .arn
 }
 
-output "patient_service_id" {
-  description = "The ECS patient service ID"
-  value       = aws_ecs_service.patient_service.id  # Use .id instead of .arn
-}
-
-output "appointment_service_id" {
-  description = "The ECS appointment service ID"
-  value       = aws_ecs_service.appointment_service.id  # Use .id instead of .arn
-}
 
 
 
