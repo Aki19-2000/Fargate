@@ -18,8 +18,3 @@ variable "vpc_id" {
   type        = string
 }
 
-# Variable for Appointment Service Target Group (if needed for configurations)
-variable "appointment_service_image" {
-  description = "Docker image URL for the appointment service"
-  type        = string
-}
