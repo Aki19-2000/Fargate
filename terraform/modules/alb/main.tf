@@ -31,8 +31,9 @@ resource "aws_lb_listener" "http_listener" {
   default_action {
     type             = "fixed-response"
     fixed_response {
-      status_code = 200
-      message_body = "Welcome to the Application Load Balancer!"
+      status_code   = 200
+      message_body  = "Welcome to the Application Load Balancer!"
+      content_type  = "text/plain"  # Added content_type here
     }
   }
 }
@@ -70,12 +71,12 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
 # Register ECS Services with respective Target Groups
 resource "aws_lb_target_group_attachment" "patient_service_attachment" {
   target_group_arn = aws_lb_target_group.patient_tg.arn
-  target_id        = aws_ecs_service.patient_service.id
+  target_id        = module.ecs.patient_service.id  # Use the service ID from the ECS module
   port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
-  target_id        = aws_ecs_service.appointment_service.id
+  target_id        = module.ecs.appointment_service.id  # Use the service ID from the ECS module
   port             = 80
 }
