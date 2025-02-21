@@ -82,11 +82,4 @@ resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   port             = 80
 }
 
-# Output for the ALB ID and DNS name
-output "alb_id" {
-  value = aws_lb.app_lb.id
-}
 
-output "alb_dns_name" {
-  value = aws_lb.app_lb.dns_name
-}
