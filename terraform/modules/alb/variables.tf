@@ -1,32 +1,23 @@
+# modules/alb/variables.tf
+
 variable "alb_name" {
-  description = "The name of the Application Load Balancer"
+  description = "The name of the ALB"
   type        = string
 }
 
 variable "lb_security_groups" {
-  description = "The security groups to associate with the ALB"
+  description = "The security groups for the ALB"
   type        = list(string)
 }
 
 variable "lb_subnets" {
-  description = "The subnets to associate with the ALB"
+  description = "The subnets for the ALB"
   type        = list(string)
 }
 
 variable "vpc_id" {
-  description = "The VPC ID where the ALB and target groups will be created"
+  description = "The VPC ID"
   type        = string
 }
 
-variable "patient_service_id" {
-  description = "The ECS patient service ID"
-  type        = string
-}
-
-variable "appointment_service_id" {
-  description = "The ECS appointment service ID"
-  type        = string
-}
-
-
-
+# Removed the variables for patient_service_id and appointment_service_id
