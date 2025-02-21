@@ -59,6 +59,7 @@ module "ecs" {
   ecs_execution_role_arn = module.vpc.ecs_execution_role_arn
   ecs_task_role_arn     = module.vpc.ecs_task_role_arn
   patient_service_image = var.patient_service_image
+  appointment_service_image = var.appointment_service_image  # Passing this variable to ECS module for appointment service
   subnet_id            = module.vpc.public_subnet_1_id
   security_group_id    = aws_security_group.ecs_sg.id  # Direct reference to the security group created in this file
 }
