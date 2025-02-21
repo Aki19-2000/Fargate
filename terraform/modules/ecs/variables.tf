@@ -37,3 +37,14 @@ variable "security_group_id" {
   description = "Security Group ID for ECS services"
   type        = string
 }
+
+variable "patient_tg_arn" {
+  description = "ARN of the Patient Service Target Group"
+  type        = string
+}
+
+variable "appointment_tg_arn" {
+  description = "ARN of the Appointment Service Target Group"
+  type        = string
+}
+
