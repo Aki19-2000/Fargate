@@ -46,8 +46,9 @@ resource "aws_lb_listener_rule" "patient_service_rule" {
     target_group_arn = aws_lb_target_group.patient_tg.arn
   }
   condition {
-    field  = "path-pattern"
-    values = ["/patient*"] # Route traffic to patient service if path starts with /patient
+    path_pattern { 
+      values = ["/patient"]
+    } 
   }
 }
 
@@ -60,8 +61,9 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
     target_group_arn = aws_lb_target_group.appointment_tg.arn
   }
   condition {
-    field  = "path-pattern"
-    values = ["/appointment*"] # Route traffic to appointment service if path starts with /appointment
+    path_pattern { 
+      values = ["/appointment"]
+    }
   }
 }
 
