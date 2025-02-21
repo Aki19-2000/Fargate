@@ -1,12 +1,3 @@
-variable "patient_service_id" {
-  description = "The ECS patient service ID"
-  type        = string
-}
-
-variable "appointment_service_id" {
-  description = "The ECS appointment service ID"
-  type        = string
-}
 
 resource "aws_lb" "app_lb" {
   name               = var.alb_name
