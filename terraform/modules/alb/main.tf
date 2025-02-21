@@ -83,16 +83,10 @@ resource "aws_lb_target_group_attachment" "patient_service_attachment" {
   target_group_arn = aws_lb_target_group.patient_tg.arn
   target_id        = var.patient_service_id  # ECS service ID passed from root module
   port             = 80
-  depends_on = [
-    aws_ecs_service.patient_service  # Make sure ECS service is created first
-  ]
 }
 
 resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
   target_id        = var.appointment_service_id  # ECS service ID passed from root module
   port             = 80
-  depends_on = [
-    aws_ecs_service.appointment_service  # Make sure ECS service is created first
-  ]
 }
