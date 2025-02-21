@@ -65,7 +65,7 @@ resource "aws_ecs_service" "patient_service" {
   launch_type     = "FARGATE"
 
   load_balancer {
-    target_group_arn = var.patient_tg_arn
+    target_group_arn = var.patient_tg_arn  # Directly reference the target group ARN from ALB
     container_name   = "patient-service"
     container_port   = 3001
   }
@@ -75,10 +75,6 @@ resource "aws_ecs_service" "patient_service" {
     security_groups = [var.security_group_id]
     assign_public_ip = true
   }
-
-  depends_on = [
-    aws_lb_target_group.patient_tg
-  ]
 }
 
 # Appointment Service ECS Service with Load Balancer Configuration
@@ -90,7 +86,7 @@ resource "aws_ecs_service" "appointment_service" {
   launch_type     = "FARGATE"
 
   load_balancer {
-    target_group_arn = var.appointment_tg_arn
+    target_group_arn = var.appointment_tg_arn  # Directly reference the target group ARN from ALB
     container_name   = "appointment-service"
     container_port   = 3002
   }
@@ -100,8 +96,4 @@ resource "aws_ecs_service" "appointment_service" {
     security_groups = [var.security_group_id]
     assign_public_ip = true
   }
-
-  depends_on = [
-    aws_lb_target_group.appointment_tg
-  ]
 }
