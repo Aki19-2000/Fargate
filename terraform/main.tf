@@ -69,11 +69,11 @@ module "ecr" {
   appointment_service_repo_name = "appointment-service"
 }
 
+# Remove patient_service_id and appointment_service_id arguments from ALB module
 module "alb" {
   source                     = "./modules/alb"
   alb_name                   = var.alb_name
   lb_security_groups         = [aws_security_group.lb_sg.id]
   lb_subnets                 = [module.vpc.public_subnet_1_id, module.vpc.public_subnet_2_id]
   vpc_id                     = module.vpc.vpc_id
-  # Removed patient_service_id and appointment_service_id from here
 }
