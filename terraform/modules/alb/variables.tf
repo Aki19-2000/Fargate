@@ -4,17 +4,22 @@ variable "alb_name" {
 }
 
 variable "lb_security_groups" {
-  description = "The security groups associated with the load balancer"
+  description = "The security groups to associate with the ALB"
   type        = list(string)
 }
 
 variable "lb_subnets" {
-  description = "The subnets where the load balancer will be deployed"
+  description = "The subnets to associate with the ALB"
   type        = list(string)
 }
 
 variable "vpc_id" {
-  description = "The VPC ID for the load balancer"
+  description = "The VPC ID where the ALB and target groups will be created"
   type        = string
 }
 
+# Variable for Appointment Service Target Group (if needed for configurations)
+variable "appointment_service_image" {
+  description = "Docker image URL for the appointment service"
+  type        = string
+}
