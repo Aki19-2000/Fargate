@@ -2,6 +2,12 @@ resource "aws_ecs_cluster" "main" {
   name = var.ecs_cluster_name
 }
 
+# Attach the AmazonEC2ContainerRegistryReadOnly policy to ECS Execution Role
+resource "aws_iam_role_policy_attachment" "ecs_execution_role_policy" {
+  policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
+  role       = var.ecs_execution_role_arn
+}
+
 # Patient Service ECS Task Definition
 resource "aws_ecs_task_definition" "patient_service" {
   family                   = var.ecs_task_family
