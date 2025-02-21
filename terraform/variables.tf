@@ -12,6 +12,7 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+# Subnets and Availability Zones
 variable "public_subnet_1_cidr" {
   description = "CIDR block for the first public subnet"
   default     = "10.0.1.0/24"
@@ -67,33 +68,4 @@ variable "appointment_service_image" {
 variable "alb_name" {
   description = "The name of the Application Load Balancer"
   default     = "dev-alb"
-}
-
-# Security Groups
-variable "lb_security_group_id" {
-  description = "The Security Group ID for the ALB"
-  type        = string
-}
-
-variable "ecs_security_group_id" {
-  description = "The Security Group ID for ECS services"
-  type        = string
-}
-
-# VPC ID (if needed for the ALB configuration)
-variable "vpc_id" {
-  description = "The VPC ID where the ALB and target groups will be created"
-  type        = string
-}
-
-# Subnet ID for ECS services
-variable "subnet_id" {
-  description = "Subnet ID for ECS services"
-  type        = string
-}
-
-# Security Group ID for ECS services
-variable "security_group_id" {
-  description = "Security Group ID for ECS services"
-  type        = string
 }
