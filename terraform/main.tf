@@ -1,31 +1,42 @@
-module "ecs" {
-  source                = "./modules/ecs"
-  ecs_cluster_name      = var.ecs_cluster_name
-  ecs_task_family       = var.ecs_task_family
-  ecs_execution_role_arn = module.vpc.ecs_execution_role_arn
-  ecs_task_role_arn     = module.vpc.ecs_task_role_arn
-  patient_service_image = var.patient_service_image
-  appointment_service_image = var.appointment_service_image
-  subnet_id            = module.vpc.public_subnet_1_id
-  security_group_id    = aws_security_group.ecs_sg.id
+# Create the Security Groups first, so they are available for ALB and ECS
+resource "aws_security_group" "ecs_sg" {
+  name        = "ecs_security_group"
+  description = "Allow inbound traffic to ECS services"
+  vpc_id      = module.vpc.vpc_id
 
-  # Pass the target group ARNs from ALB module
-  patient_tg_arn       = module.alb.patient_tg.arn
-  appointment_tg_arn   = module.alb.appointment_tg.arn
+  ingress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
-module "alb" {
-  source                     = "./modules/alb"
-  alb_name                   = var.alb_name
-  lb_security_groups         = [aws_security_group.lb_sg.id]
-  lb_subnets                 = [module.vpc.public_subnet_1_id, module.vpc.public_subnet_2_id]
-  vpc_id                     = module.vpc.vpc_id
-}
+resource "aws_security_group" "lb_sg" {
+  name        = "lb_security_group"
+  description = "Allow inbound traffic to the ALB"
+  vpc_id      = module.vpc.vpc_id
 
-module "ecr" {
-  source                       = "./modules/ecr"
-  patient_service_repo_name    = "patient-service"
-  appointment_service_repo_name = "appointment-service"
+  ingress {
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 65535
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
 }
 
 module "vpc" {
@@ -38,4 +49,38 @@ module "vpc" {
   private_subnet_2_cidr = var.private_subnet_2_cidr
   az_1                 = var.az_1
   az_2                 = var.az_2
+}
+
+# ECS module now directly refers to the ecs_sg security group created above
+module "ecs" {
+  source                = "./modules/ecs"
+  ecs_cluster_name      = var.ecs_cluster_name
+  ecs_task_family       = var.ecs_task_family
+  ecs_execution_role_arn = module.vpc.ecs_execution_role_arn
+  ecs_task_role_arn     = module.vpc.ecs_task_role_arn
+  patient_service_image = var.patient_service_image
+  appointment_service_image = var.appointment_service_image
+  subnet_id            = module.vpc.public_subnet_1_id
+  security_group_id    = aws_security_group.ecs_sg.id  # Link ECS services to ecs_sg security group
+
+  # Pass the target group ARNs from ALB module
+  patient_tg_arn       = module.alb.patient_tg.arn
+  appointment_tg_arn   = module.alb.appointment_tg.arn
+}
+
+module "ecr" {
+  source                       = "./modules/ecr"
+  patient_service_repo_name    = "patient-service"
+  appointment_service_repo_name = "appointment-service"
+}
+
+# ALB module now directly refers to the lb_sg security group created above
+module "alb" {
+  source                     = "./modules/alb"
+  alb_name                   = var.alb_name
+  lb_security_groups         = [aws_security_group.lb_sg.id]  # Use lb_sg security group for ALB
+  lb_subnets                 = [module.vpc.public_subnet_1_id, module.vpc.public_subnet_2_id]
+  vpc_id                     = module.vpc.vpc_id
+  patient_service_id         = module.ecs.patient_service_id  # Pass ECS service ID from ECS module
+  appointment_service_id     = module.ecs.appointment_service_id  # Pass ECS service ID from ECS module
 }
