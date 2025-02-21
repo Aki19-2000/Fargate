@@ -17,16 +17,3 @@ appointment_service_image = "510278866235.dkr.ecr.us-east-1.amazonaws.com/appoin
 
 # ALB Configuration
 alb_name                 = "dev-alb"
-
-# Security Groups (now directly referring to the SGs created in `main.tf`)
-lb_security_group_id     = aws_security_group.lb_sg.id
-ecs_security_group_id    = aws_security_group.ecs_sg.id
-
-# VPC ID (if needed for the ALB configuration)
-vpc_id                   = "your-vpc-id"  # Provide your VPC ID here
-
-# Subnet ID for ECS services
-subnet_id                = "your-subnet-id"  # Provide your subnet ID here
-
-# Security Group ID for ECS services
-security_group_id        = "your-security-group-id"  # Provide ECS security group ID here
