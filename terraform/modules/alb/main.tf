@@ -29,14 +29,39 @@ resource "aws_lb_listener" "http_listener" {
   protocol          = "HTTP"
 
   default_action {
+    type             = "fixed-response"
+    fixed_response {
+      status_code = 200
+      message_body = "Welcome to the Application Load Balancer!"
+    }
+  }
+}
+
+# Add listener rule to forward traffic to Patient Service
+resource "aws_lb_listener_rule" "patient_service_rule" {
+  listener_arn = aws_lb_listener.http_listener.arn
+  priority     = 1
+  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.patient_tg.arn
   }
+  condition {
+    field  = "path-pattern"
+    values = ["/patient*"] # Route traffic to patient service if path starts with /patient
+  }
+}
 
-  # Additional rule for appointment service
-  default_action {
+# Add listener rule to forward traffic to Appointment Service
+resource "aws_lb_listener_rule" "appointment_service_rule" {
+  listener_arn = aws_lb_listener.http_listener.arn
+  priority     = 2
+  action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.appointment_tg.arn
+  }
+  condition {
+    field  = "path-pattern"
+    values = ["/appointment*"] # Route traffic to appointment service if path starts with /appointment
   }
 }
 
