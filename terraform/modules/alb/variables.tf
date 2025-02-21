@@ -18,4 +18,15 @@ variable "vpc_id" {
   type        = string
 }
 
+variable "patient_service_id" {
+  description = "The ECS patient service ID"
+  type        = string
+}
+
+variable "appointment_service_id" {
+  description = "The ECS appointment service ID"
+  type        = string
+}
+
+
 
