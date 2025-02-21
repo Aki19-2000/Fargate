@@ -1,5 +1,5 @@
 variable "ecs_cluster_name" {
-  description = "The name of the ECS Cluster"
+  description = "ECS Cluster Name"
   type        = string
 }
 
@@ -9,27 +9,31 @@ variable "ecs_task_family" {
 }
 
 variable "ecs_execution_role_arn" {
-  description = "The ARN of the ECS execution role"
+  description = "ARN of the ECS Execution Role"
   type        = string
 }
 
 variable "ecs_task_role_arn" {
-  description = "The ARN of the ECS task role"
+  description = "ARN of the ECS Task Role"
   type        = string
 }
 
 variable "patient_service_image" {
-  description = "The Docker image URL for the patient service"
+  description = "Docker image URL for the patient service"
+  type        = string
+}
+
+variable "appointment_service_image" {
+  description = "Docker image URL for the appointment service"
   type        = string
 }
 
 variable "subnet_id" {
-  description = "The subnet ID where ECS tasks will run"
+  description = "ID of the subnet"
   type        = string
 }
 
 variable "security_group_id" {
-  description = "The security group ID for ECS service"
+  description = "ID of the security group"
   type        = string
 }
-
