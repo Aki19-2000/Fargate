@@ -83,12 +83,12 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
 # Register ECS Services with respective Target Groups
 resource "aws_lb_target_group_attachment" "patient_service_attachment" {
   target_group_arn = aws_lb_target_group.patient_tg.arn
-  target_id        = var.patient_service_id
+  target_id        = aws_ecs_service.patient_service.network_configuration[0].assign_public_ip # This will automatically register the IP addresses
   port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
-  target_id        = var.appointment_service_id
+  target_id        = aws_ecs_service.appointment_service.network_configuration[0].assign_public_ip # This will automatically register the IP addresses
   port             = 80
 }
