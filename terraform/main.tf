@@ -1,15 +1,3 @@
-module "vpc" {
-  source               = "./modules/vpc"
-  vpc_cidr             = var.vpc_cidr
-  vpc_name             = "my-vpc"
-  public_subnet_1_cidr = var.public_subnet_1_cidr
-  private_subnet_1_cidr = var.private_subnet_1_cidr
-  public_subnet_2_cidr = var.public_subnet_2_cidr
-  private_subnet_2_cidr = var.private_subnet_2_cidr
-  az_1                 = var.az_1
-  az_2                 = var.az_2
-}
-
 # Create the Security Groups first, so they are available for ALB and ECS
 resource "aws_security_group" "ecs_sg" {
   name        = "ecs_security_group"
@@ -51,6 +39,17 @@ resource "aws_security_group" "lb_sg" {
   }
 }
 
+module "vpc" {
+  source               = "./modules/vpc"
+  vpc_cidr             = var.vpc_cidr
+  vpc_name             = "my-vpc"
+  public_subnet_1_cidr = var.public_subnet_1_cidr
+  private_subnet_1_cidr = var.private_subnet_1_cidr
+  public_subnet_2_cidr = var.public_subnet_2_cidr
+  private_subnet_2_cidr = var.private_subnet_2_cidr
+  az_1                 = var.az_1
+  az_2                 = var.az_2
+}
 
 module "ecs" {
   source                = "./modules/ecs"
@@ -60,7 +59,7 @@ module "ecs" {
   ecs_task_role_arn     = module.vpc.ecs_task_role_arn
   patient_service_image = var.patient_service_image
   subnet_id            = module.vpc.public_subnet_1_id
-  security_group_id    = aws_security_group.ecs_sg.id  # This will work as the SG is created before ECS module
+  security_group_id    = aws_security_group.ecs_sg.id  # Direct reference to the security group created in this file
 }
 
 module "ecr" {
@@ -72,7 +71,7 @@ module "ecr" {
 module "alb" {
   source             = "./modules/alb"
   alb_name           = var.alb_name
-  lb_security_groups = [aws_security_group.lb_sg.id]  # This will work as the SG is created before ALB module
+  lb_security_groups = [aws_security_group.lb_sg.id]  # Direct reference to the security group created in this file
   lb_subnets         = [module.vpc.public_subnet_1_id, module.vpc.public_subnet_2_id]
   vpc_id             = module.vpc.vpc_id
 }
