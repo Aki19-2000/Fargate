@@ -51,6 +51,7 @@ module "vpc" {
   az_2                 = var.az_2
 }
 
+# ECS module now directly refers to the ecs_sg security group created above
 module "ecs" {
   source                = "./modules/ecs"
   ecs_cluster_name      = var.ecs_cluster_name
@@ -68,6 +69,7 @@ module "ecr" {
   appointment_service_repo_name = "appointment-service"
 }
 
+# ALB module now directly refers to the lb_sg security group created above
 module "alb" {
   source             = "./modules/alb"
   alb_name           = var.alb_name
