@@ -1,11 +1,3 @@
-resource "aws_lb" "app_lb" {
-  name               = var.alb_name
-  internal           = false
-  load_balancer_type = "application"
-  security_groups    = var.lb_security_groups
-  subnets            = var.lb_subnets
-}
-
 # Target Group for Patient Service
 resource "aws_lb_target_group" "patient_tg" {
   name     = "patient-service-tg"
@@ -71,12 +63,12 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
 # Register ECS Services with respective Target Groups
 resource "aws_lb_target_group_attachment" "patient_service_attachment" {
   target_group_arn = aws_lb_target_group.patient_tg.arn
-  target_id        = var.patient_service_id  # Reference the service ID from ECS module
+  target_id        = module.ecs.patient_service_id  # Correct reference to output of ECS module
   port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
-  target_id        = var.appointment_service_id  # Reference the service ID from ECS module
+  target_id        = module.ecs.appointment_service_id  # Correct reference to output of ECS module
   port             = 80
 }
