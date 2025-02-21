@@ -77,6 +77,7 @@ module "alb" {
   lb_security_groups         = [aws_security_group.lb_sg.id]
   lb_subnets                 = [module.vpc.public_subnet_1_id, module.vpc.public_subnet_2_id]
   vpc_id                     = module.vpc.vpc_id
-  patient_service_id         = module.ecs.patient_service_id  # Pass the ECS patient service ID
-  appointment_service_id     = module.ecs.appointment_service_id  # Pass the ECS appointment service ID
+  patient_service_id         = module.ecs.patient_service_id  # ECS service ID from module.ecs
+  appointment_service_id     = module.ecs.appointment_service_id  # ECS service ID from module.ecs
 }
+
