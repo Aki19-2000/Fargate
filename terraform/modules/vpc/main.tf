@@ -20,7 +20,7 @@ resource "aws_internet_gateway" "main" {
 
 # Create the NAT Gateway for Private Subnets
 resource "aws_eip" "nat" {
-  vpc = true
+  domain = "vpc"
 }
 
 resource "aws_nat_gateway" "main" {
