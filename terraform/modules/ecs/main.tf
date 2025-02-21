@@ -2,10 +2,6 @@ resource "aws_ecs_cluster" "main" {
   name = var.ecs_cluster_name
 }
 
-output "ecs_cluster_id" {
-  value = aws_ecs_cluster.main.id
-}
-
 # Patient Service ECS Task Definition
 resource "aws_ecs_task_definition" "patient_service" {
   family                   = var.ecs_task_family
@@ -20,8 +16,8 @@ resource "aws_ecs_task_definition" "patient_service" {
   container_definitions = jsonencode([{
     name      = "patient-service"
     image     = var.patient_service_image
-    cpu       = 256     # Container-level CPU allocation
-    memory    = 512     # Container-level memory allocation
+    cpu       = 256
+    memory    = 512
     essential = true
     portMappings = [
       {
@@ -47,8 +43,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
   container_definitions = jsonencode([{
     name      = "appointment-service"
     image     = var.appointment_service_image
-    cpu       = 256     # Container-level CPU allocation
-    memory    = 512     # Container-level memory allocation
+    cpu       = 256
+    memory    = 512
     essential = true
     portMappings = [
       {
