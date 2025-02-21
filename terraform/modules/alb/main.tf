@@ -1,3 +1,12 @@
+# Declare the Application Load Balancer
+resource "aws_lb" "app_lb" {
+  name               = var.alb_name
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = var.lb_security_groups
+  subnets            = var.lb_subnets
+}
+
 # Target Group for Patient Service
 resource "aws_lb_target_group" "patient_tg" {
   name     = "patient-service-tg"
@@ -71,4 +80,13 @@ resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
   target_id        = module.ecs.appointment_service_id  # Correct reference to output of ECS module
   port             = 80
+}
+
+# Output for the ALB ID and DNS name
+output "alb_id" {
+  value = aws_lb.app_lb.id
+}
+
+output "alb_dns_name" {
+  value = aws_lb.app_lb.dns_name
 }
