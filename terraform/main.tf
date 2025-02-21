@@ -61,8 +61,6 @@ module "ecs" {
   appointment_service_image = var.appointment_service_image
   subnet_id            = module.vpc.public_subnet_1_id
   security_group_id    = aws_security_group.ecs_sg.id
-  patient_tg_arn       = module.alb.patient_tg.arn  # Pass target group ARN for patient service
-  appointment_tg_arn   = module.alb.appointment_tg.arn  # Pass target group ARN for appointment service
 }
 
 module "ecr" {
@@ -71,12 +69,11 @@ module "ecr" {
   appointment_service_repo_name = "appointment-service"
 }
 
+
 module "alb" {
   source                     = "./modules/alb"
   alb_name                   = var.alb_name
   lb_security_groups         = [aws_security_group.lb_sg.id]
   lb_subnets                 = [module.vpc.public_subnet_1_id, module.vpc.public_subnet_2_id]
   vpc_id                     = module.vpc.vpc_id
-  patient_service_id         = module.ecs.patient_service_id
-  appointment_service_id     = module.ecs.appointment_service_id
 }
