@@ -22,8 +22,8 @@ resource "aws_ecs_task_definition" "patient_service" {
     essential = true
     portMappings = [
       {
-        containerPort = 3001
-        hostPort      = 3001
+        containerPort = 80
+        hostPort      = 80
         protocol      = "tcp"
       }
     ]
@@ -49,8 +49,8 @@ resource "aws_ecs_task_definition" "appointment_service" {
     essential = true
     portMappings = [
       {
-        containerPort = 3002
-        hostPort      = 3002
+        containerPort = 80
+        hostPort      = 80
         protocol      = "tcp"
       }
     ]
