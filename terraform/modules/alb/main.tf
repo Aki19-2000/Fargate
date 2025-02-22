@@ -9,6 +9,15 @@ variable "appointment_service_id" {
   type        = string
 }
 
+# Define the ALB
+resource "aws_lb" "app_lb" {
+  name               = var.alb_name
+  internal           = false
+  load_balancer_type = "application"
+  security_groups    = var.lb_security_groups
+  subnets            = var.lb_subnets
+}
+
 # Define Target Groups with IP as the target type
 resource "aws_lb_target_group" "patient_tg" {
   name        = "patient-service-tg"
