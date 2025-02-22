@@ -90,14 +90,4 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
 }
 
 # Attach ECS Service IPs to Target Group
-resource "aws_lb_target_group_attachment" "patient_service_attachment" {
-  target_group_arn = aws_lb_target_group.patient_tg.arn
-  target_id        = var.patient_service_ip  # ECS service IP (task's public IP)
-  port             = 80
-}
 
-resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
-  target_group_arn = aws_lb_target_group.appointment_tg.arn
-  target_id        = var.appointment_service_ip  # ECS service IP (task's public IP)
-  port             = 80
-}
