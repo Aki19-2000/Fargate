@@ -17,6 +17,15 @@ output "appointment_service_id" {
   value       = aws_ecs_service.appointment_service.id  # Use .id instead of .arn
 }
 
+output "patient_service_ip" {
+  value = aws_ecs_service.patient_service.network_configuration.0.awsvpc_configuration.0.assign_public_ip
+}
+
+output "appointment_service_ip" {
+  value = aws_ecs_service.appointment_service.network_configuration.0.awsvpc_configuration.0.assign_public_ip
+}
+
+
 
 
 
