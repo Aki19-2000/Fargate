@@ -5,16 +5,8 @@ on:
 
 jobs:
   # Job 1: Checkout Code
-  checkout:
+  JOB1:
     runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-
-  # Job 2: Create AWS Resources (e.g., ECR repositories) using Terraform
-  create-aws-resources:
-    runs-on: ubuntu-latest
-    needs: checkout  # This job depends on the checkout job
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
