@@ -1,4 +1,4 @@
-
+# Create the Application Load Balancer (ALB)
 resource "aws_lb" "app_lb" {
   name               = var.alb_name
   internal           = false
@@ -7,20 +7,22 @@ resource "aws_lb" "app_lb" {
   subnets            = var.lb_subnets
 }
 
-# Target Group for Patient Service
+# Target Group for Patient Service with IP as the target type
 resource "aws_lb_target_group" "patient_tg" {
   name     = "patient-service-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  target_type = "ip"  # Change target type to "ip"
 }
 
-# Target Group for Appointment Service
+# Target Group for Appointment Service with IP as the target type
 resource "aws_lb_target_group" "appointment_tg" {
   name     = "appointment-service-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
+  target_type = "ip"  # Change target type to "ip"
 }
 
 # ALB Listener for HTTP traffic
@@ -69,3 +71,15 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
   }
 }
 
+# Attach ECS Service to Target Group by using the "aws_lb_target_group_attachment"
+resource "aws_lb_target_group_attachment" "patient_service_attachment" {
+  target_group_arn = aws_lb_target_group.patient_tg.arn
+  target_id        = aws_ecs_task_definition.patient_service.network_configuration.0.awsvpc_configuration.0.assign_public_ip  # Use ECS task's public IP
+  port             = 80
+}
+
+resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
+  target_group_arn = aws_lb_target_group.appointment_tg.arn
+  target_id        = aws_ecs_task_definition.appointment_service.network_configuration.0.awsvpc_configuration.0.assign_public_ip  # Use ECS task's public IP
+  port             = 80
+}
