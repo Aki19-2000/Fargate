@@ -38,15 +38,16 @@ resource "aws_lb_target_group" "appointment_tg" {
 # Attach ECS services to the target groups using IPs
 resource "aws_lb_target_group_attachment" "patient_service_attachment" {
   target_group_arn = aws_lb_target_group.patient_tg.arn
-  target_id        = var.patient_service_id  # Use the ECS task's public IP
+  target_id        = aws_ecs_task.patient_service_task.network_interface[0].private_ip  # Correct reference for task's private IP
   port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
-  target_id        = var.appointment_service_id  # Use the ECS task's public IP
+  target_id        = aws_ecs_task.appointment_service_task.network_interface[0].private_ip  # Correct reference for task's private IP
   port             = 80
 }
+
 
 # ALB Listener for HTTP traffic
 resource "aws_lb_listener" "http_listener" {
