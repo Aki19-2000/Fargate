@@ -79,4 +79,3 @@ module "alb" {
   patient_service_id         = module.ecs.patient_service_ip
   appointment_service_id     = module.ecs.appointment_service_ip
 }
-
