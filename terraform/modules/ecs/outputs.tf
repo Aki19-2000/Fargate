@@ -19,9 +19,10 @@ output "appointment_service_id" {
 
 # Updated: Getting the private IP of the ECS tasks
 output "patient_service_ip" {
-  value = aws_ecs_service.patient_service.network_configuration[0].network_interfaces[0].private_ip
+  value = aws_ecs_service.patient_service.network_configuration[0].assign_public_ip
 }
 
+# ECS Service Output for appointment service IP
 output "appointment_service_ip" {
-  value = aws_ecs_service.appointment_service.network_configuration[0].network_interfaces[0].private_ip
+  value = aws_ecs_service.appointment_service.network_configuration[0].assign_public_ip
 }
