@@ -87,12 +87,3 @@ resource "aws_ecs_service" "appointment_service" {
   }
 }
 
-# ECS Service Output for patient service IP
-output "patient_service_ip" {
-  value = aws_ecs_service.patient_service.network_configuration[0].assign_public_ip
-}
-
-# ECS Service Output for appointment service IP
-output "appointment_service_ip" {
-  value = aws_ecs_service.appointment_service.network_configuration[0].assign_public_ip
-}
