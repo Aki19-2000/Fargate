@@ -17,17 +17,11 @@ output "appointment_service_id" {
   value       = aws_ecs_service.appointment_service.id  # Use .id instead of .arn
 }
 
+# Updated: Getting the private IP of the ECS tasks
 output "patient_service_ip" {
-  value = aws_ecs_service.patient_service.network_configuration[0].assign_public_ip
+  value = aws_ecs_service.patient_service.network_configuration[0].network_interfaces[0].private_ip
 }
 
 output "appointment_service_ip" {
-  value = aws_ecs_service.appointment_service.network_configuration[0].assign_public_ip
+  value = aws_ecs_service.appointment_service.network_configuration[0].network_interfaces[0].private_ip
 }
-
-
-
-
-
-
-
