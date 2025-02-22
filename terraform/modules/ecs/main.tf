@@ -1,4 +1,4 @@
-# ECS Cluster
+# Define ECS Cluster
 resource "aws_ecs_cluster" "main" {
   name = var.ecs_cluster_name
 }
@@ -85,4 +85,14 @@ resource "aws_ecs_service" "appointment_service" {
     security_groups = [var.security_group_id]
     assign_public_ip = true
   }
+}
+
+# ECS Service Output for patient service IP
+output "patient_service_ip" {
+  value = aws_ecs_service.patient_service.network_configuration[0].assign_public_ip
+}
+
+# ECS Service Output for appointment service IP
+output "appointment_service_ip" {
+  value = aws_ecs_service.appointment_service.network_configuration[0].assign_public_ip
 }
