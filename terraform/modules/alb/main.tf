@@ -1,28 +1,28 @@
-# Accept ECS service IDs as input variables in the ALB module
+# Accept ECS service IP addresses as input variables in the ALB module
 variable "patient_service_id" {
-  description = "The ECS patient service ID"
+  description = "The ECS patient service IP"
   type        = string
 }
 
 variable "appointment_service_id" {
-  description = "The ECS appointment service ID"
+  description = "The ECS appointment service IP"
   type        = string
 }
 
 # Define Target Groups with IP as the target type
 resource "aws_lb_target_group" "patient_tg" {
-  name     = "patient-service-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+  name        = "patient-service-tg"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
   target_type = "ip"  # Set target_type to IP
 }
 
 resource "aws_lb_target_group" "appointment_tg" {
-  name     = "appointment-service-tg"
-  port     = 80
-  protocol = "HTTP"
-  vpc_id   = var.vpc_id
+  name        = "appointment-service-tg"
+  port        = 80
+  protocol    = "HTTP"
+  vpc_id      = var.vpc_id
   target_type = "ip"  # Set target_type to IP
 }
 
