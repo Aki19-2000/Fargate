@@ -21,3 +21,14 @@ variable "vpc_id" {
 }
 
 # Removed the variables for patient_service_id and appointment_service_id
+
+variable "patient_service_id" {
+  description = "The ECS patient service ID"
+  type        = string
+}
+
+variable "appointment_service_id" {
+  description = "The ECS appointment service ID"
+  type        = string
+}
+
