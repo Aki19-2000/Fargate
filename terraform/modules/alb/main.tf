@@ -1,12 +1,19 @@
-# ALB module - Create load balancer and target group attachments
-
 # Patient Service Target Group
 resource "aws_lb_target_group" "patient_tg" {
   name     = "patient-service-tg"
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
-  target_type = "ip"  # Update the target type to IP
+  target_type = "ip"  # Target type set to IP (Fargate tasks)
+
+  health_check {
+    path                = "/health"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    matcher             = "200"
+  }
 }
 
 # Appointment Service Target Group
@@ -15,7 +22,16 @@ resource "aws_lb_target_group" "appointment_tg" {
   port     = 80
   protocol = "HTTP"
   vpc_id   = var.vpc_id
-  target_type = "ip"  # Update the target type to IP
+  target_type = "ip"  # Target type set to IP (Fargate tasks)
+
+  health_check {
+    path                = "/health"
+    interval            = 30
+    timeout             = 5
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    matcher             = "200"
+  }
 }
 
 # ALB Load Balancer
@@ -73,15 +89,15 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
   }
 }
 
-# Attach ECS Service IPs to Target Group (Use IP target type)
+# Attach ECS Service IPs to Target Group
 resource "aws_lb_target_group_attachment" "patient_service_attachment" {
   target_group_arn = aws_lb_target_group.patient_tg.arn
-  target_id        = var.patient_service_ip  # Use the ECS task's public IP
+  target_id        = var.patient_service_ip  # ECS service IP (task's public IP)
   port             = 80
 }
 
 resource "aws_lb_target_group_attachment" "appointment_service_attachment" {
   target_group_arn = aws_lb_target_group.appointment_tg.arn
-  target_id        = var.appointment_service_ip  # Use the ECS task's public IP
+  target_id        = var.appointment_service_ip  # ECS service IP (task's public IP)
   port             = 80
 }
