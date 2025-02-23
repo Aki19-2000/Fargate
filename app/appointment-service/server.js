@@ -57,4 +57,11 @@ app.post('/appointments', (req, res) => {
       message: 'Appointment scheduled successfully',
       appointment: newAppointment 
     });
-  } catch (error)
+  } catch (error) {
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+app.listen(port, '0.0.0.0', () => {
+  console.log(`Appointment service listening at http://0.0.0.0:${port}`);
+});
