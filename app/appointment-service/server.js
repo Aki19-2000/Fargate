@@ -4,6 +4,11 @@ const port = process.env.PORT || 3001;
 
 app.use(express.json());
 
+// Define a route for the root path
+app.get('/', (req, res) => {
+  res.send('Welcome to the appointment Service API!');
+});
+
 // In-memory data store (replace with a database in a real application)
 let appointments = [
   { id: '1', patientId: '1', date: '2023-06-15', time: '10:00', doctor: 'Dr. Smith' },
