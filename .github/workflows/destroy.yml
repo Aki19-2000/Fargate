@@ -30,10 +30,10 @@ jobs:
 
       # Run Terraform Plan to show what will be destroyed (optional, but can be useful to review)
       - name: Terraform Plan - Destroy
-        run: terraform plan -destroy -var-file=env/dev/dev.tfvars -auto-approve
+        run: terraform plan -destroy -var-file=env/dev/dev.tfvars
         working-directory: terraform  # Ensure Terraform runs from the correct directory
 
-      # Apply Terraform Destroy to remove resources
+      # Apply Terraform Destroy to remove resources (auto-approve)
       - name: Terraform Apply - Destroy
         run: terraform apply -destroy -var-file=env/dev/dev.tfvars -auto-approve
         working-directory: terraform  # Ensure Terraform runs from the correct directory
