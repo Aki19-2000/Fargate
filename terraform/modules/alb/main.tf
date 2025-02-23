@@ -71,7 +71,7 @@ resource "aws_lb_listener_rule" "patient_service_rule" {
 
   condition {
     path_pattern {
-      values = ["/patient"]
+      values = ["/patients"]
     }
   }
 }
@@ -88,7 +88,7 @@ resource "aws_lb_listener_rule" "appointment_service_rule" {
 
   condition {
     path_pattern {
-      values = ["/appointment"]
+      values = ["/appointments"]
     }
   }
 }
