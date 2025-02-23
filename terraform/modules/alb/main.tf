@@ -59,21 +59,37 @@ resource "aws_lb_listener" "http_listener" {
   }
 }
 
-# Attach the Target Groups to the ALB Listener (without conditions, just forward to the target group)
+# Add listener rule to forward traffic to Patient Service
 resource "aws_lb_listener_rule" "patient_service_rule" {
   listener_arn = aws_lb_listener.http_listener.arn
   priority     = 1
+
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.patient_tg.arn
   }
+
+  condition {
+    path_pattern {
+      values = ["/patient"]
+    }
+  }
 }
 
+# Add listener rule to forward traffic to Appointment Service
 resource "aws_lb_listener_rule" "appointment_service_rule" {
   listener_arn = aws_lb_listener.http_listener.arn
   priority     = 2
+
   action {
     type             = "forward"
     target_group_arn = aws_lb_target_group.appointment_tg.arn
   }
+
+  condition {
+    path_pattern {
+      values = ["/appointment"]
+    }
+  }
 }
+
